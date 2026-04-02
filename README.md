@@ -1,36 +1,47 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Wishing App
 
-## Getting Started
+Core anonymous wish submission flow:
 
-First, run the development server:
+Client -> Next.js Route Handler -> Supabase Edge Function -> Database
+
+The frontend never talks to Supabase directly. Only the Next.js server route sends requests to the edge function.
+
+## Environment setup
+
+1. Copy `.env.example` to `.env.local`.
+2. Fill in required values:
+	- `SUPABASE_URL`
+	- `SUPABASE_ANON_KEY`
+	- `SUPABASE_EDGE_SHARED_SECRET`
+3. Optional:
+	- `SUPABASE_EDGE_FUNCTION_NAME` (defaults to `submit_wish`)
+	- `TURNSTILE_SECRET_KEY` and `TURNSTILE_VERIFY_URL` (only if CAPTCHA is enabled)
+
+## Development
 
 ```bash
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Open http://localhost:3000.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## API endpoint
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+- `POST /api/wish`
+- Content-Type must be `application/json`
+- Request body:
 
-## Learn More
+```json
+{
+  "content": "I wish for more trees in my city"
+}
+```
 
-To learn more about Next.js, take a look at the following resources:
+The route validates input, optionally verifies CAPTCHA, then proxies to Supabase `submit_wish`.
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## Structure
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+- `app/api/wish/route.ts`: server proxy endpoint
+- `lib/config/env.ts`: server env loading and validation
+- `lib/services/*.ts`: service layer (validation, CAPTCHA, Supabase edge call, orchestration)
+- `components/wish-playground.tsx`: minimal form UI
