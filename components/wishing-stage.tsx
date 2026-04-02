@@ -304,6 +304,17 @@ export function WishingStage() {
       <section className="stage-center mx-auto w-full max-w-4xl parallax-node" style={{ ["--depth" as string]: "20px" } as CSSProperties}>
         <WishPlayground />
       </section>
+
+      <footer
+        className="stage-consent parallax-node"
+        style={{ ["--depth" as string]: "12px" } as CSSProperties}
+      >
+        <p>
+          When you send a wish, you agree it may be stored anonymously in our database.
+          This app is built to avoid storing identity details, but your own text can still
+          reveal personal information, so do not include private or identifying content.
+        </p>
+      </footer>
     </main>
   );
 }

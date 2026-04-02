@@ -194,6 +194,31 @@ body::after {
   z-index: 20;
 }
 
+.stage-consent {
+  position: absolute;
+  left: 50%;
+  bottom: 0.85rem;
+  z-index: 24;
+  width: min(980px, calc(100% - 1.6rem));
+  transform: translateX(-50%);
+  border-radius: 0.88rem;
+  border: 1px solid color-mix(in srgb, var(--toggle-border) 80%, transparent);
+  background: color-mix(in srgb, var(--input-bg) 76%, transparent);
+  padding: 0.58rem 0.74rem;
+  font-size: 0.78rem;
+  line-height: 1.38;
+  color: color-mix(in srgb, var(--ink-muted) 92%, white 8%);
+  text-align: center;
+  backdrop-filter: blur(8px);
+  box-shadow: 0 10px 26px -22px rgba(5, 18, 35, 0.9);
+}
+
+:root[data-theme="dark"] .stage-consent {
+  border-color: color-mix(in srgb, var(--toggle-border) 84%, transparent);
+  background: color-mix(in srgb, var(--input-bg) 82%, transparent);
+  color: color-mix(in srgb, var(--ink-muted) 88%, white 12%);
+}
+
 .scene-shader {
   position: absolute;
   border-radius: 9999px;
@@ -1076,6 +1101,14 @@ body::after {
    .stage-toolbar {
      right: 0.7rem;
      top: 0.7rem;
+   }
+
+   .stage-consent {
+     bottom: 0.62rem;
+     width: calc(100% - 1rem);
+     padding: 0.54rem 0.62rem;
+     font-size: 0.73rem;
+     line-height: 1.32;
    }
  
    .theme-toggle {
